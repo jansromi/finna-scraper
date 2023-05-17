@@ -10,6 +10,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -17,10 +18,8 @@ import org.json.JSONObject;
  * Class for Finna-library queries with an ISBN-code. FinnaHaku-object contains relevant information
  * about the book after the second query. 
  * 
- * Uses the FinnaParser-class for parsing JSON-objects for clarity, but this could be done with the JSON-parser
- * 
  * @author Jansromi
- * @version 30.3.2023
+ * @version 25.4.2023
  *
  */
 public class FinnaHaku {
@@ -50,8 +49,21 @@ public class FinnaHaku {
 	private List<String> bookYKLClasses = new ArrayList<String>();
 	private List<String> bookLanguages = new ArrayList<String>();
 	
+	// Need to figure what to do, if API gives many values for bookPublisher.
+	// Right now we return the first item.
+	private List<String> bookPublisher = new ArrayList<String>();
+	private List<String> bookPublicationDates = new ArrayList<String>();
+	
 	private String rawResponse;
 	private JSONObject bookData;
+	
+	public static class BookNotFoundException extends Exception {
+        private static final long serialVersionUID = 1L;
+        public BookNotFoundException(String msg) {
+            super(msg);
+        }
+    }
+	
 	
 	/**
 	 * Constructor with isbn. Does a query with 
@@ -66,11 +78,12 @@ public class FinnaHaku {
 	
 	/**
 	 * Sets the relevant data for the book
+	 * @throws BookNotFoundException 
 	 */
-	public void fetchBookData() {
+	public void fetchBookData() throws BookNotFoundException {
 		if (finnaId == null) {
-			System.err.println("FinnaID not found! ");
-			return;
+			System.err.println("FinnaID not found!");
+			throw new BookNotFoundException("Book was not found");
 		}
 		query(false);
 		bookData = FinnaParser.parseFirstRecord(rawResponse);
@@ -78,7 +91,13 @@ public class FinnaHaku {
 		bookWriter = FinnaParser.parseWriter(bookData);
 		bookSubjects = FinnaParser.parseSubjects(bookData);
 		bookLanguages = FinnaParser.parseLanguage(bookData);
-		
+		try {
+			bookYKLClasses = FinnaParser.parseYKL(bookData);
+		} catch (JSONException e) {
+			System.err.println("YKL-class not found: " + e.getMessage());
+		}
+		bookPublisher = FinnaParser.parsePublishers(bookData);
+		bookPublicationDates = FinnaParser.parsePublicationDates(bookData);
 	}
 	
 	/**
@@ -122,8 +141,12 @@ public class FinnaHaku {
 	/**
 	 * @return the bookWriter
 	 */
-	public List<String> getBookWriter() {
-		return bookWriter;
+	public String getBookWriter() {
+		StringBuilder writers = new StringBuilder();
+		for (String s : bookWriter) {
+			writers.append(s + "; ");
+		}
+		return writers.toString();
 	}
 
 	/**
@@ -136,15 +159,24 @@ public class FinnaHaku {
 	/**
 	 * @return the bookYKLClasses
 	 */
-	public List<String> getBookYKLClasses() {
-		return bookYKLClasses;
+	public String getBookYKLClasses() {
+		StringBuilder classes = new StringBuilder();
+		if (bookYKLClasses == null) return "";
+		for (String s : bookYKLClasses) {
+			classes.append(s + "; ");
+		}
+		return classes.toString();
 	}
 	
 	/**
 	 * @return the bookLanguages
 	 */
-	public List<String> getBookLanguages() {
-		return bookLanguages;
+	public String getBookLanguages() {
+		StringBuilder langs = new StringBuilder();
+		for (String s : bookLanguages) {
+			langs.append(s + "; ");
+		}
+		return langs.toString();
 	}
 
 	/**
@@ -152,6 +184,20 @@ public class FinnaHaku {
 	 */
 	public String getIsbn() {
 		return isbn;
+	}
+	
+	/**
+	 * @return first (and usually only) item of bookPublisher-list.
+	 */
+	public String getPublisher() {
+		return bookPublisher.get(0);
+	}
+	
+	/**
+	 * @return first (and usually only) item of bookPublicationDates-list.
+	 */
+	public String getPublicationDates() {
+		return bookPublicationDates.get(0);
 	}
 
 	/**

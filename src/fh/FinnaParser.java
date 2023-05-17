@@ -7,7 +7,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class FinnaParser {
+/**
+ * This class provides several methods for parsing JSON data returned by the Finna API.
+ * The class has no instance variables, and all methods are static, so they can be called without instantiating the class.
+ * 
+ * @author Jansromi
+ * @version 25.4.2023
+ */
+public final class FinnaParser {
+	
 	/**
 	 * Search result parser.
 	 * @param content JSON search data from Finna API
@@ -34,7 +42,6 @@ public class FinnaParser {
 		if (obj == null) return null;
 		return obj.getString("id");
 	}
-	
 	
 	/**
 	 * Parses the book title.
@@ -65,15 +72,23 @@ public class FinnaParser {
 		return null;
 	}
 	
-	
 	/**
 	 * Parses the main writers into a list.
 	 * @param obj JSON search data from Finna API
 	 * @return List of writers
 	 */
 	public static List<String> parseWriter(JSONObject obj) {
-	    JSONObject primaryWriters = obj.getJSONObject("authors").getJSONObject("primary");
-	    return getObjKeys(primaryWriters);
+		JSONObject writers;
+		try {
+			writers = obj.getJSONObject("authors").getJSONObject("primary");
+		} catch (JSONException e) {
+			try {
+				writers = obj.getJSONObject("authors").getJSONObject("secondary");
+			} catch (JSONException e1) {
+				return new ArrayList<String>();
+			}
+		}
+	    return getObjKeys(writers);
 	    
 	}
 	
@@ -88,19 +103,34 @@ public class FinnaParser {
 	}
 	
 	/**
-	 * TODO: org.json.JSONException: if ykl class is not found
+	 * Returns te publishers as a list.
+	 * @param obj JSON search data from Finna API
+	 * @return List of publishers
+	 */
+	public static List<String> parsePublishers(JSONObject obj){
+		JSONArray s = obj.getJSONArray("publishers");
+		return getArrKeys(s);
+	}
+	
+	/**
+	 * Returns the publication dates as a list
+	 * @param obj JSON search data from Finna API
+	 * @return List of publication dates
+	 */
+	public static List<String> parsePublicationDates(JSONObject obj){
+		JSONArray s = obj.getJSONArray("publicationDates");
+		return getArrKeys(s);
+	}
+	
+	/**
 	 * @param content JSON search data from Finna API
+	 * @throws JSONException if ykl classification is not found
 	 * @return
 	 */
-	public static List<String> parseYKL(JSONObject obj) {
-		JSONArray s;
-		try {
-			s = obj.getJSONObject("classifications").getJSONArray("ykl");
-			return getArrKeys(s);
-		} catch (JSONException e) {
-			
-		}
-		return null;
+	public static List<String> parseYKL(JSONObject obj) throws JSONException {
+		JSONObject classifications = obj.getJSONObject("classifications");
+		JSONArray yklArray = classifications.getJSONArray("ykl");
+		return getArrKeys(yklArray);
 	}
 	
 	/**
@@ -133,8 +163,8 @@ public class FinnaParser {
 	}
 	
 	/**
-	 * Palauttaa listan alkiot
-	 * @param list 
+	 * Returns the list as a bar-delimited string
+	 * @param list Containing string values
 	 * @return
 	 */
 	public static String listToBarString(List<String> list) {
@@ -144,4 +174,5 @@ public class FinnaParser {
 		}
 		return result;
 	}
+
 }
