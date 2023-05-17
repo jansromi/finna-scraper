@@ -117,7 +117,8 @@ public class FinnaHaku {
 	    HttpClient client = HttpClient.newHttpClient();
 	    HttpRequest request = HttpRequest.newBuilder()
 	            .uri(URI.create(url))
-	            .build();
+		    .build();
+	// TODO: better error handling
 	try {
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
         this.rawResponse = response.body();
