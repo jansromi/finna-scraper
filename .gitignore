@@ -1,4 +1,6 @@
 /bin/
+/backup/
+*.txt
 .settings
 .classpath
 .project
