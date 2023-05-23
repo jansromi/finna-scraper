@@ -5,4 +5,5 @@ public class AppConfig {
 	    public static final String PUBLISHERS_FILE = "pubs.txt";
 	    public static final String GENRES_FILE = "genres.txt";
 	    public static final String TOPICS_FILE = "topics.txt";
+	    public static final String UNKNOWN_GENRE_DESC = "UNKNOWN";
 }

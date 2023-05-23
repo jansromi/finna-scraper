@@ -54,7 +54,11 @@ public class FileService {
 	            }
 	        }
 	    } catch (FileNotFoundException e) {
-	        e.printStackTrace();
+	        try {
+				file.createNewFile();
+			} catch (IOException e1) {
+				System.err.println("Failed to create new file to: " + file.getAbsolutePath());
+			}
 	    }
 	    return -1;
 	}
@@ -80,11 +84,22 @@ public class FileService {
 	        }
 	    } catch (IOException e) {
 	        System.out.println("An error occurred while reading " + filename + ": " + e.getMessage());
-	        return -1; // Exit the method or handle the error accordingly
+	        return -1;
 	    }
 	    return maxEntryId + 1;
 	}
 	
+	/**
+     * Retrieves the YKL ID of a given entry from a given file.
+     * Because YKL-classificatio is a hierarchy, incrementing numbers cannot be used.
+     * (30 | YLEINEN YHTEISKUNTATIEDE --> 30.1 | Sosiologia --> 30.11 | Sosiaaliset järjestelmät)
+     * 
+     * If an ykl-class is not found, -1 is assigned as an "unknown"-value.
+     * 
+     * @param entry The entry whose YKL ID should be retrieved.
+     * @param filename The name of the file from which the entry's YKL ID should be retrieved.
+     * @return The YKL ID of the given entry or "-1" if the entry is not found.
+     */
 	public static String getYKLIdFromFile(String entry, String filename) {
 	    File file = new File(filename);
 	    try (Scanner scanner = new Scanner(file)) {

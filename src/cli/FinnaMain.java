@@ -1,13 +1,15 @@
 package cli;
 
-import java.util.List;
-
-import org.json.JSONArray;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import fh.FinnaHaku;
 import fh.FinnaHaku.BookNotFoundException;
+import cli.services.*;
 
 public class FinnaMain {
+	static int bookId = 1;
 	
 	public static void help() {
 		System.out.println("-s = subjects");
@@ -15,39 +17,26 @@ public class FinnaMain {
 		System.out.println("EXAMP: 9780743273565 -s");
 	}
 	
-	/**
-	 * Func for showing book subjects
-	 * @param fh
-	 */
-	public static void subjects(FinnaHaku fh) {
-		List<String> list = fh.getBookSubjects();
-		for (String string : list) {
-			JSONArray arr = new JSONArray(string);
-			String s = arr.getString(0).replace(",", "");
-			System.out.println(s);
-		}
-	}
 
 	public static void main(String[] args){
-		if (args[0] == "-h" || args[0] == "--help") help();
-		
-		if (args.length < 2) {
-			System.out.println("Set isbn and type for search");
-			return;
-		}
-		
-		FinnaHaku fh = new FinnaHaku(args[0]);
-		
-		
-		try {
-			fh.fetchBookData();
-		} catch (BookNotFoundException e) {
-			e.printStackTrace();
-			return;
-		}
-		
-		if (args[1].equalsIgnoreCase("-s")) subjects(fh);
-
+		File file = new File("input.txt");
+	    try (Scanner scanner = new Scanner(file)) {
+	        while (scanner.hasNextLine()) {
+	            String line = scanner.nextLine();
+	            FinnaHaku fh = new FinnaHaku(line);
+	            try {
+					fh.fetchBookData();
+				} catch (BookNotFoundException e) {
+					System.err.println("Book with isbn: " + line + " was not found");
+					e.printStackTrace();
+					continue;
+				}
+	            DataProcessor.processBookEntry(fh, bookId);
+	            bookId++;
+	        }
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 }
