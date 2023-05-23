@@ -1,0 +1,31 @@
+1|Otava
+2|WSOY
+3|Tammi
+4|Gummerus
+5|Gaudeamus
+6|Like
+7|Penguin Random House
+8|HarperCollins
+9|Simon & Schuster
+10|Hachette
+11|Macmillan Publishers
+12|Pearson
+13|Sammakko
+14|Werner Söderström Osakeyhtiö
+15|Penguin
+16|Grand Central
+17|Penguin Books
+18|City Lights Books
+19|Grove Weidenfeld
+20|New Directions
+21|Sammakko
+22|Kustannusosakeyhtiö Sammakko
+23|Ronin Publishing, INC
+24|Weilin + Göös
+25|Gaudeamus Helsinki University Press
+26|BOOK STUDIO
+27|Werner Söderström Osakeyhtiö
+
+
+28|Into
+29|NULL

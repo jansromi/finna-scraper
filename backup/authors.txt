@@ -1,0 +1,28 @@
+1|Sillanpää, Frans Eemil
+2|Linna, Väinö
+3|Waltari, Mika
+4|Tolkien, J.R.R
+5|Hemingway, Ernest
+6|Austen, Jane
+7|Orwell, George
+8|Dickens, Charles
+9|Shelley, Mary
+10|Woolf, Virginia
+11|Fitzgerald, F. Scott
+12|Lee, Harper
+13|Steinbeck, John
+14|Kerouac, Jack
+15|Ginsberg, Allen
+16|Burroughs, William S.
+17|Ferlinghetti, Lawrence
+18|Corso, Gregory
+19|Snyder, Gary
+20|Di Prima, Diane
+21|Thompson, Hunter S.
+22|Paasilinna, Arto
+23|Nabokov, Vladimir
+24|Hesse, Hermann
+25|Bukowski, Charles
+26|Zizek, Slavoj
+27|Hassel, Sven
+28|Welsh, Irvine
