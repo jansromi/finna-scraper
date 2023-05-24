@@ -109,8 +109,8 @@ public class DatabaseService {
 	private static void addAuthorToDatabase(int authorId, String[] authorData) {
 		FileService.addEntryToFile(authorId, authorData[0], AppConfig.AUTHORS_FILE);
 		
-	    String dob = (authorData[1] != null && !authorData[1].isEmpty()) ? "'" + authorData[1] + "'" : "NULL";
-	    String dod = (authorData[2] != null && !authorData[2].isEmpty()) ? "'" + authorData[2] + "'" : "NULL";
+	    String dob = (authorData[1] != null && !authorData[1].isEmpty()) ? "'" + authorData[1] + "-01-01" + "'" : "NULL";
+	    String dod = (authorData[2] != null && !authorData[2].isEmpty()) ? "'" + authorData[2] + "-01-01" + "'" : "NULL";
 		
 	    writeInsertStatementToDb("INSERT INTO author (id, author_name, dob, dod) VALUES (" 
                 + authorId + ", '" + authorData[0] + "', " + dob + ", " + dod + ");");
