@@ -20,6 +20,15 @@ public class DataProcessor {
 	 * @param bookId
 	 */
 	public static void processBookEntry(FinnaHaku fh, int bookId) {
+		DatabaseService.processBook(fh, bookId);
+		
+		String publisher = fh.getPublisher();
+	    
+	    if (publisher != null) {
+	    	publisher = Util.sanitizeInput(publisher);
+	    	DatabaseService.processPublisher(publisher, bookId);
+	    }
+	    
 	    String author = Util.sanitizeInput(fh.getBookWriter());
 	    DatabaseService.processAuthor(author, bookId);
 	    
@@ -49,15 +58,6 @@ public class DataProcessor {
 			}
 			
 		}
-	    
-	    String publisher = fh.getPublisher();
-	    if (publisher == null) {
-	    	publisher = "NULL";
-	    }
-	    else {
-	    	 publisher = Util.sanitizeInput(publisher);
-	    }
-	    int pub = DatabaseService.processPublisher(publisher, bookId);
-	    DatabaseService.processBook(fh, bookId, pub);
+
 	}
 }

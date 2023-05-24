@@ -55,7 +55,7 @@ public class DatabaseService {
 	    } else {
 	        int newTopicId = FileService.generateNewEntryId(AppConfig.TOPICS_FILE);
 	        addTopicToDatabase(newTopicId, topic);
-	        writeInsertStatementToDb("INSERT INTO book_topic (book_id, author_id) VALUES (" + bookId + ", " + newTopicId + ");");
+	        writeInsertStatementToDb("INSERT INTO book_topic (book_id, topic_id) VALUES (" + bookId + ", " + newTopicId + ");");
 	    }
 	}
 	
@@ -68,9 +68,9 @@ public class DatabaseService {
 		String genreId = FileService.getYKLIdFromFile(genre, AppConfig.GENRES_FILE);
 	    if (genreId.equalsIgnoreCase("-1")) {
 	    	String unknownGenreId = "-1";
-	        writeInsertStatementToDb("INSERT INTO book_genre (book_id, genre_ykl_id) VALUES (" + bookId + ", " + unknownGenreId + ");");
+	        writeInsertStatementToDb("INSERT INTO book_genre (book_id, genre_ykl_id) VALUES (" + bookId + ", " + "'" + unknownGenreId + "'" + ");");
 	    } else {
-	    	writeInsertStatementToDb("INSERT INTO book_genre (book_id, genre_ykl_id) VALUES (" + bookId + ", " + genreId + ");");
+	    	writeInsertStatementToDb("INSERT INTO book_genre (book_id, genre_ykl_id) VALUES (" + bookId + ", " + "'" + genreId + "'" + ");");
 	    }
 	}
 	
@@ -80,20 +80,20 @@ public class DatabaseService {
 	 * @param bookId
 	 * @return
 	 */
-	public static int processPublisher(String publisher, int bookId) {
+	public static void processPublisher(String publisher, int bookId) {
 		int publisherId = FileService.getEntryIdFromFile(publisher, AppConfig.PUBLISHERS_FILE);
 	    if (publisherId == -1) {
 	    	publisherId = FileService.generateNewEntryId(AppConfig.PUBLISHERS_FILE);
 	        addPublisherToDatabase(publisherId, publisher);
-	        writeInsertStatementToDb("INSERT INTO book_publisher (book_id, publisher_id) VALUES (" + bookId + ", " + publisherId + ");");
-	    } 
-	    return publisherId;
+	        writeInsertStatementToDb("INSERT INTO book_publisher (book_id, pub_id) VALUES (" + bookId + ", " + publisherId + ");");
+	    } else {
+	    	writeInsertStatementToDb("INSERT INTO book_publisher (book_id, pub_id) VALUES (" + bookId + ", " + publisherId + ");");
+	    }
 	}
 	
-	public static void processBook(FinnaHaku fh, int bookId, int pub) {
-	    String statement = "INSERT INTO book (id, title, publisher_id, isbn, release_year) VALUES (" + bookId + ", " + 
-	    "'" + fh.getBookTitle() + "', " + 
-	    pub + ", " +
+	public static void processBook(FinnaHaku fh, int bookId) {
+	    String statement = "INSERT INTO book (id, title, isbn, release_year) VALUES (" + bookId + ", " + 
+	    "'" + fh.getBookTitle() + "', " +
 	    "'" + fh.getIsbn() + "', " +
 	    fh.getPublicationDates() + 
 	    ");";
