@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import cli.config.AppConfig;
+import cli.utils.Util;
 import fh.FinnaHaku;
 
 /**
@@ -29,16 +30,19 @@ public class DatabaseService {
 	
 	/**
 	 * 
-	 * @param author
+	 * @param authorData[3], where
+	 * 					[0] = authors name,
+	 * 					[1] = optional DOB,
+	 * 					[2] = optional DOD
 	 * @param bookId
 	 */
-	public static void processAuthor(String author, int bookId) {
-	    int authorId = FileService.getEntryIdFromFile(author, AppConfig.AUTHORS_FILE);
+	public static void processAuthor(String[] authorData, int bookId) {
+	    int authorId = FileService.getEntryIdFromFile(authorData[0], AppConfig.AUTHORS_FILE);
 	    if (authorId != -1) {
 	        writeInsertStatementToDb("INSERT INTO book_author (book_id, author_id) VALUES (" + bookId + ", " + authorId + ");");
 	    } else {
 	        int newAuthorId = FileService.generateNewEntryId(AppConfig.AUTHORS_FILE);
-	        addAuthorToDatabase(newAuthorId, author);
+	        addAuthorToDatabase(newAuthorId, authorData);
 	        writeInsertStatementToDb("INSERT INTO book_author (book_id, author_id) VALUES (" + bookId + ", " + newAuthorId + ");");
 	    }
 	}
@@ -102,9 +106,14 @@ public class DatabaseService {
 	}
 	
 	// MEDIATORS
-	private static void addAuthorToDatabase(int authorId, String author) {
-		FileService.addEntryToFile(authorId, author, AppConfig.AUTHORS_FILE);
-	    writeInsertStatementToDb("INSERT INTO author (id, author_name, dob, dod) VALUES (" + authorId + ", '" + author + "', NULL, NULL);");
+	private static void addAuthorToDatabase(int authorId, String[] authorData) {
+		FileService.addEntryToFile(authorId, authorData[0], AppConfig.AUTHORS_FILE);
+		
+	    String dob = (authorData[1] != null && !authorData[1].isEmpty()) ? "'" + authorData[1] + "'" : "NULL";
+	    String dod = (authorData[2] != null && !authorData[2].isEmpty()) ? "'" + authorData[2] + "'" : "NULL";
+		
+	    writeInsertStatementToDb("INSERT INTO author (id, author_name, dob, dod) VALUES (" 
+                + authorId + ", '" + authorData[0] + "', " + dob + ", " + dod + ");");
 	}
 	
 	private static void addTopicToDatabase(int topicId, String topic) {

@@ -12,7 +12,7 @@ import java.util.Scanner;
 /**
  * A class to handle file operations related to book entries.
  * 
- * Raison d'etre of this class is to help developing and testing the relations,
+ * Raison d'etre of this class is to help developing and testing the app and relations,
  * without actually using a database
  * @author Jansromi
  *

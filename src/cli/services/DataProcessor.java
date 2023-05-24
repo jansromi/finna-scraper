@@ -29,8 +29,13 @@ public class DataProcessor {
 	    	DatabaseService.processPublisher(publisher, bookId);
 	    }
 	    
-	    String author = Util.sanitizeInput(fh.getBookWriter());
-	    DatabaseService.processAuthor(author, bookId);
+	    List<String> authors = fh.getBookWriters();
+	    
+	    for (String author : authors) {
+	    	String[] parsedAuthorData = Util.parseAuthor(author);
+	    	DatabaseService.processAuthor(parsedAuthorData, bookId);
+		}
+	    
 	    
 	    List<String> genres = fh.getBookYKLClassesArray();
 	    // if (genre == null)
