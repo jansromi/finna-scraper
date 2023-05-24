@@ -148,6 +148,13 @@ public class FinnaHaku {
 		}
 		return writers.toString();
 	}
+	
+	/**
+	 * @return the bookWriter
+	 */
+	public List<String> getBookWriters() {
+		return bookWriter;
+	}
 
 	/**
 	 * @return the bookSubjects
