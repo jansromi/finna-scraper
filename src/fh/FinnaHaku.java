@@ -149,6 +149,13 @@ public class FinnaHaku {
 		}
 		return writers.toString();
 	}
+	
+	/**
+	 * @return the bookWriter
+	 */
+	public List<String> getBookWriters() {
+		return bookWriter;
+	}
 
 	/**
 	 * @return the bookSubjects
@@ -167,6 +174,12 @@ public class FinnaHaku {
 			classes.append(s + "; ");
 		}
 		return classes.toString();
+	}
+	
+
+	public List<String> getBookYKLClassesArray() {
+		if (bookYKLClasses.size() == 0) return null;
+		return bookYKLClasses;
 	}
 	
 	/**
@@ -191,6 +204,7 @@ public class FinnaHaku {
 	 * @return first (and usually only) item of bookPublisher-list.
 	 */
 	public String getPublisher() {
+		if (bookPublisher.size() == 0) return null;
 		return bookPublisher.get(0);
 	}
 	
@@ -214,4 +228,5 @@ public class FinnaHaku {
 	public String getRawResponse() {
 		return rawResponse;
 	}
+
 }

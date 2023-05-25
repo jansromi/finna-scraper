@@ -1,5 +1,6 @@
 /bin/
 /backup/
+src/fh/TestiMain.java
 *.txt
 .settings
 .classpath
