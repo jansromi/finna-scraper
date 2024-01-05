@@ -27,11 +27,12 @@ import org.json.JSONObject;
  *      - returns with yield or something similar would be cool
  * 
  * TODO: TESTS!
+ * 
  * @author Jansromi
  * @version 25.4.2023
  *
  */
-public class FinnaHaku {
+public class FinnaQuery {
 	private static final String isbnUrl = "https://api.finna.fi/v1/search?lookfor=";
 	private static final String finnaUrl = "https://api.finna.fi/v1/record?id=";
 	
@@ -68,7 +69,7 @@ public class FinnaHaku {
 	 * given isbn and sets the FinnaID for the book.
 	 * @param isbn
 	 */
-	public FinnaHaku(String isbn) {
+	public FinnaQuery(String isbn) {
 		this.isbn = isbn;
 		query(true);
 		finnaId = FinnaParser.parseId(rawResponse);
@@ -227,7 +228,7 @@ public class FinnaHaku {
 	}
 
 	public static void main(String[] args) throws BookNotFoundException {
-		FinnaHaku haku = new FinnaHaku("9789524831420");
+		FinnaQuery haku = new FinnaQuery("9789524831420");
 		haku.fetchBookData();
 		System.out.println(haku.getBookTitle());
 	}
