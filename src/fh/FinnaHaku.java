@@ -118,17 +118,16 @@ public class FinnaHaku {
 	    HttpRequest request = HttpRequest.newBuilder()
 	            .uri(URI.create(url))
 		    .build();
-	// TODO: better error handling
-	try {
-        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-        this.rawResponse = response.body();
-    } catch (MalformedURLException e) {
-    	System.err.println(e.getMessage());
-    } catch (IOException e) {
-    	System.err.println( e.getLocalizedMessage());
-    } catch (InterruptedException e) {
-    	System.err.println(e.getLocalizedMessage());
-    }
+		try {
+    	    HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+    	    this.rawResponse = response.body();
+    	} catch (MalformedURLException e) {
+    		System.err.println(e.getMessage());
+    	} catch (IOException e) {
+    		System.err.println( e.getLocalizedMessage());
+    	} catch (InterruptedException e) {
+    		System.err.println(e.getLocalizedMessage());
+    	}
 	
 	}
 	
@@ -227,6 +226,10 @@ public class FinnaHaku {
 	 */
 	public String getRawResponse() {
 		return rawResponse;
+	}
+
+	public static void main(String[] args) {
+		System.out.println("Hello world!");
 	}
 
 }
