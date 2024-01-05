@@ -26,17 +26,7 @@ public class FinnaHaku {
 	private static final String isbnUrl = "https://api.finna.fi/v1/search?lookfor=";
 	private static final String finnaUrl = "https://api.finna.fi/v1/record?id=";
 	
-	/**
-	 * Params in finnish:
-	 * authors = kirjan kirjoittajat
-	 * title = kirjan kokonimi
-	 * publishers = julkaisija
-	 * publicationDates = julkaisuvuosi
-	 * classification = kirjastoluokitus
-	 * subjects = tunnisteet
-	 * year = julkaisuvuosi
-	 * prettyPrint = JSONissa rivinvaihdot
-	 */
+	
 	private static final String finnaParams = "&field[]=authors&field[]=title&field[]=publishers&field[]=publicationDates"
             						+ "&field[]=classifications&field[]=subjects&field[]=year&field[]=languages&"
             						+ "field[]=summary&prettyPrint=0";
@@ -63,7 +53,6 @@ public class FinnaHaku {
             super(msg);
         }
     }
-	
 	
 	/**
 	 * Constructor with isbn. Does a query with 
@@ -227,9 +216,4 @@ public class FinnaHaku {
 	public String getRawResponse() {
 		return rawResponse;
 	}
-
-	public static void main(String[] args) {
-		System.out.println("Hello world!");
-	}
-
 }
