@@ -18,6 +18,15 @@ import org.json.JSONObject;
  * Class for Finna-library queries with an ISBN-code. FinnaHaku-object contains relevant information
  * about the book after the second query. 
  * 
+ * 
+ * TODO: Implement major refactoring to class
+ * 		- Instead of having an instance to each query,
+ * 		  make finnahaku a book-generator, that returns queried books
+ * 		- FinnaHaku would be initialized with an ISBN, or list of ISBNs,
+ * 	      and it would return those books as a list of books.
+ *      - returns with yield or something similar would be cool
+ * 
+ * TODO: TESTS!
  * @author Jansromi
  * @version 25.4.2023
  *
@@ -215,5 +224,11 @@ public class FinnaHaku {
 	 */
 	public String getRawResponse() {
 		return rawResponse;
+	}
+
+	public static void main(String[] args) throws BookNotFoundException {
+		FinnaHaku haku = new FinnaHaku("9789524831420");
+		haku.fetchBookData();
+		System.out.println(haku.getBookTitle());
 	}
 }
