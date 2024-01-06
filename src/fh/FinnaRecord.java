@@ -19,6 +19,8 @@ public class FinnaRecord {
      * @return The record as a JSONObject
      */
     public JSONObject getRecord() {
+        record.put("isbn", isbn);
+        record.put("finnaId", finnaId);
         return record;
     }
 
