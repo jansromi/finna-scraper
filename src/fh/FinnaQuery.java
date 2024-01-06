@@ -27,7 +27,6 @@ public class FinnaQuery {
     public static FinnaRecord fetchRecord(String isbn) {
         String records = queryWithIsbn(isbn);
         String finnaId = FinnaParser.parseFinnaId(records);
-        System.out.println("FinnaID: " + finnaId);
         String record = queryWithFinnaId(finnaId);
         JSONObject obj = FinnaParser.parseFirstRecord(record);
         if (obj != null) {
