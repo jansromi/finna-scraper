@@ -6,3 +6,4 @@ src/fh/TestiMain.java
 .classpath
 .project
 .vscode
+lib/junit-platform-console-standalone-1.10.1.jar
