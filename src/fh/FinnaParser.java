@@ -63,7 +63,7 @@ public final class FinnaParser {
 	 * @param obj JSON search data from Finna API
 	 * @return The book title
 	 */
-	public static String parseBookTitle(JSONObject obj) {
+	public static String parseRecordTitle(JSONObject obj) {
 		try {
 			return obj.getString(FINNA_RECORD_TITLE_KEY);
 		} catch (org.json.JSONException e) {
@@ -77,7 +77,7 @@ public final class FinnaParser {
 	 * @param obj JSON search data from Finna API
 	 * @return List of book languages
 	 */
-	public static List<String> parseLanguage(JSONObject obj) {
+	public static List<String> parseRecordLanguages(JSONObject obj) {
 		try {
 			JSONArray s = obj.getJSONArray(FINNA_RECORD_LANGUAGES_KEY);
 			return getArrKeys(s);
@@ -92,7 +92,7 @@ public final class FinnaParser {
 	 * @param obj JSON search data from Finna API
 	 * @return List of writers
 	 */
-	public static List<String> parseWriter(JSONObject obj) {
+	public static List<String> parseRecordAuthors(JSONObject obj) {
 		JSONObject writers;
 		try {
 			writers = obj.getJSONObject(FINNA_RECORD_AUTHORS_KEY).getJSONObject(FINNA_RECORD_PRIMARY_KEY);
@@ -112,7 +112,7 @@ public final class FinnaParser {
 	 * @param obj JSON search data from Finna API
 	 * @return List of subject tags
 	 */
-	public static List<String> parseSubjects(JSONObject obj){
+	public static List<String> parseRecordSubjects(JSONObject obj){
 		JSONArray s = obj.getJSONArray(FINNA_RECORD_SUBJECTS_KEY);
 		return getArrKeys(s);
 	}
@@ -122,7 +122,7 @@ public final class FinnaParser {
 	 * @param obj JSON search data from Finna API
 	 * @return List of publishers
 	 */
-	public static List<String> parsePublishers(JSONObject obj){
+	public static List<String> parseRecordPublishers(JSONObject obj){
 		JSONArray s = obj.getJSONArray(FINNA_RECORD_PUBLISHERS_KEY);
 		return getArrKeys(s);
 	}
@@ -132,7 +132,7 @@ public final class FinnaParser {
 	 * @param obj JSON search data from Finna API
 	 * @return List of publication dates
 	 */
-	public static List<String> parsePublicationDates(JSONObject obj){
+	public static List<String> parseRecordPublicationDates(JSONObject obj){
 		JSONArray s = obj.getJSONArray(FINNA_RECORD_PUBLICATION_DATES_KEY);
 		return getArrKeys(s);
 	}
@@ -142,7 +142,7 @@ public final class FinnaParser {
 	 * @throws JSONException if ykl classification is not found
 	 * @return
 	 */
-	public static List<String> parseYKL(JSONObject obj) throws JSONException {
+	public static List<String> parseRecordYKLClasses(JSONObject obj) throws JSONException {
 		JSONObject classifications = obj.getJSONObject(FINNA_RECROD_CLASSIFICATIONS_KEY);
 		JSONArray yklArray = classifications.getJSONArray(FINNA_RECORD_YKL_KEY);
 		return getArrKeys(yklArray);
@@ -154,7 +154,7 @@ public final class FinnaParser {
 	 * @param obj
 	 * @return List of keys
 	 */
-	public static List<String> getObjKeys(JSONObject obj){
+	private static List<String> getObjKeys(JSONObject obj){
 		List<String> keysList = new ArrayList<>();
 	    Iterator<String> keys = obj.keys();
 	    while (keys.hasNext()) {
@@ -169,25 +169,11 @@ public final class FinnaParser {
 	 * @param arr
 	 * @return List of keys
 	 */
-	public static List<String> getArrKeys(JSONArray arr){
+	private static List<String> getArrKeys(JSONArray arr){
 		List<String> keysList = new ArrayList<>();
 		for (Object obj : arr) {
 			keysList.add(obj.toString());
 		}
 		return keysList;
 	}
-	
-	/**
-	 * Returns the list as a bar-delimited string
-	 * @param list Containing string values
-	 * @return
-	 */
-	public static String listToBarString(List<String> list) {
-		String result = "";
-		for (String string : list) {
-			result = result + string + "|";
-		}
-		return result;
-	}
-
 }
