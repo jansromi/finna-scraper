@@ -8,30 +8,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * This class provides several methods for parsing JSON data returned by the Finna API.
- * The class has no instance variables, and all methods are static, so they can be called without instantiating the class.
+ * This static class provides several methods for parsing JSON data returned by the Finna API.
  * 
  * @author Jansromi
- * @version 25.4.2023
+ * @version 6.1.2024
  */
 public final class FinnaParser {
-	
-	/**
-	 * Search result parser.
-	 * @param content JSON search data from Finna API
-	 * @return First (most relevant) search result
-	 */
-	public static JSONObject parseFirstRecord(String content) {
-		try {
-			JSONObject obj = new JSONObject(content);
-			JSONObject firstRecord = obj.getJSONArray("records").getJSONObject(0);
-			return firstRecord;
-		} catch (org.json.JSONException e) {
-			System.err.println("Record not found! " + e.getMessage());
-		}
-		return null;
-	}
-	
+	private final static String FINNA_RECORDS_ARRAY_KEY = "records";
+	private final static String FINNA_RECORD_TITLE_KEY = "title";
+	private final static String FINNA_RECORD_LANGUAGES_KEY = "languages";
+	private final static String FINNA_RECORD_AUTHORS_KEY = "authors";
+	private final static String FINNA_RECORD_PRIMARY_KEY = "primary";
+	private final static String FINNA_RECORD_SECONDARY_KEY = "secondary";
+	private final static String FINNA_RECORD_SUBJECTS_KEY = "subjects";
+	private final static String FINNA_RECORD_PUBLISHERS_KEY = "publishers";
+	private final static String FINNA_RECORD_PUBLICATION_DATES_KEY = "publicationDates";
+	private final static String FINNA_RECROD_CLASSIFICATIONS_KEY = "classifications";
+	private final static String FINNA_RECORD_YKL_KEY = "ykl";
+
 	/**
 	 * Parses the FinnaID from the search result.
 	 * 
@@ -49,13 +43,29 @@ public final class FinnaParser {
 	}
 	
 	/**
+	 * Search result parser.
+	 * @param content JSON search data from Finna API
+	 * @return First (most relevant) search result
+	 */
+	public static JSONObject parseFirstRecord(String content) {
+		try {
+			JSONObject obj = new JSONObject(content);
+			JSONObject firstRecord = obj.getJSONArray(FINNA_RECORDS_ARRAY_KEY).getJSONObject(0);
+			return firstRecord;
+		} catch (org.json.JSONException e) {
+			System.err.println("Record not found! " + e.getMessage());
+		}
+		return null;
+	}
+	
+	/**
 	 * Parses the book title.
 	 * @param obj JSON search data from Finna API
 	 * @return The book title
 	 */
 	public static String parseBookTitle(JSONObject obj) {
 		try {
-			return obj.getString("title");
+			return obj.getString(FINNA_RECORD_TITLE_KEY);
 		} catch (org.json.JSONException e) {
 			System.err.println("Title not found! " + e.getMessage());
 		}
@@ -69,7 +79,7 @@ public final class FinnaParser {
 	 */
 	public static List<String> parseLanguage(JSONObject obj) {
 		try {
-			JSONArray s = obj.getJSONArray("languages");
+			JSONArray s = obj.getJSONArray(FINNA_RECORD_LANGUAGES_KEY);
 			return getArrKeys(s);
 		} catch (org.json.JSONException e) {
 			System.err.println("Languages not found!" + e.getMessage());
@@ -85,10 +95,10 @@ public final class FinnaParser {
 	public static List<String> parseWriter(JSONObject obj) {
 		JSONObject writers;
 		try {
-			writers = obj.getJSONObject("authors").getJSONObject("primary");
+			writers = obj.getJSONObject(FINNA_RECORD_AUTHORS_KEY).getJSONObject(FINNA_RECORD_PRIMARY_KEY);
 		} catch (JSONException e) {
 			try {
-				writers = obj.getJSONObject("authors").getJSONObject("secondary");
+				writers = obj.getJSONObject(FINNA_RECORD_AUTHORS_KEY).getJSONObject(FINNA_RECORD_SECONDARY_KEY);
 			} catch (JSONException e1) {
 				return new ArrayList<String>();
 			}
@@ -103,7 +113,7 @@ public final class FinnaParser {
 	 * @return List of subject tags
 	 */
 	public static List<String> parseSubjects(JSONObject obj){
-		JSONArray s = obj.getJSONArray("subjects");
+		JSONArray s = obj.getJSONArray(FINNA_RECORD_SUBJECTS_KEY);
 		return getArrKeys(s);
 	}
 	
@@ -113,7 +123,7 @@ public final class FinnaParser {
 	 * @return List of publishers
 	 */
 	public static List<String> parsePublishers(JSONObject obj){
-		JSONArray s = obj.getJSONArray("publishers");
+		JSONArray s = obj.getJSONArray(FINNA_RECORD_PUBLISHERS_KEY);
 		return getArrKeys(s);
 	}
 	
@@ -123,7 +133,7 @@ public final class FinnaParser {
 	 * @return List of publication dates
 	 */
 	public static List<String> parsePublicationDates(JSONObject obj){
-		JSONArray s = obj.getJSONArray("publicationDates");
+		JSONArray s = obj.getJSONArray(FINNA_RECORD_PUBLICATION_DATES_KEY);
 		return getArrKeys(s);
 	}
 	
@@ -133,8 +143,8 @@ public final class FinnaParser {
 	 * @return
 	 */
 	public static List<String> parseYKL(JSONObject obj) throws JSONException {
-		JSONObject classifications = obj.getJSONObject("classifications");
-		JSONArray yklArray = classifications.getJSONArray("ykl");
+		JSONObject classifications = obj.getJSONObject(FINNA_RECROD_CLASSIFICATIONS_KEY);
+		JSONArray yklArray = classifications.getJSONArray(FINNA_RECORD_YKL_KEY);
 		return getArrKeys(yklArray);
 	}
 	
