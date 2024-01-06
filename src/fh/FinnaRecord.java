@@ -16,6 +16,16 @@ public class FinnaRecord {
     }
 
     /**
+     * Debug constructor
+     * @param isbn
+     */
+    public FinnaRecord(String isbn) {
+        this.record = new JSONObject();
+        this.isbn = isbn;
+        this.finnaId = "";
+    }
+
+    /**
      * @return The record as a JSONObject
      */
     public JSONObject getRecord() {
