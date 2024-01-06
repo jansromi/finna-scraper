@@ -33,11 +33,16 @@ public final class FinnaParser {
 	}
 	
 	/**
-	 * FinnaID parser
-	 * @param obj JSON search data from Finna API
-	 * @return ID of the search result
+	 * Parses the FinnaID from the search result.
+	 * 
+	 * Response from Finna API contains a list of records that match the query.
+	 * The results may also contain irrelevant records or even records that do not even have the ISBN.
+	 * This method returns the first record, which is (usually and hopefully!) the most relevant one.
+	 * 
+	 * @param response Response bodystring from Finna API-query
+	 * @return FinnaID of the first search result
 	 */
-	public static String parseId(String response){
+	public static String parseFinnaId(String response){
 		JSONObject obj = parseFirstRecord(response);
 		if (obj == null) return null;
 		return obj.getString("id");
