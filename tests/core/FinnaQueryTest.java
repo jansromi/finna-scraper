@@ -2,8 +2,8 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import fh.FinnaQuery;
-import fh.FinnaRecord;
+import fq.core.FinnaQuery;
+import fq.core.FinnaRecord;
 
 public class FinnaQueryTest {
 
