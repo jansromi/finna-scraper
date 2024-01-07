@@ -1,6 +1,8 @@
 
 ## Classes
 
+### Core classes
+
 - [`FinnaGenerator`](src/fh/FinnaGenerator.java): Responsible for fetching Finna records asynchronously. It takes a list of ISBNs and splits it into blocks. Each block is processed by a separate thread.
 
 - [`FinnaParser`](src/fh/FinnaParser.java): Parses the Finna records.
